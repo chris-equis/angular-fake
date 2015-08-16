@@ -1,0 +1,22 @@
+{
+  "name": "angular-fake",
+  "version": "0.1.0",
+  "authors": [
+    "Cristi Socea <office@soceacristian.ro>"
+  ],
+  "description": "Angular Fake lets you define a Fake (mocked) Backend for your front-end application",
+  "main": "fake.js",
+  "keywords": [
+    "mock",
+    "backend"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "angular": "~1.4.4",
+    "angular-mocks": "~1.4.4"
+  },
+  "devDependencies": {
+    "chance": "~0.7.6",
+    "lodash": "~3.10.1"
+  }
+}
