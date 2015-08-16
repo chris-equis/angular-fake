@@ -7,19 +7,35 @@
     <!-- Vendor -->
     <script src="../_bower/angular/angular.min.js"></script>
     <script src="../_bower/angular-mocks/angular-mocks.js"></script>
-    <script src="../_bower/chance/chance.js"></script>
 
-    <!-- Fake Module -->
+    <!-- Fake's files (include only in DEV mode) -->
+    <!-- Chance.js is a library for generating random stuff -->
+    <script src="../_bower/chance/chance.js"></script>
+    <script src="../_bower/lodash/lodash.js"></script>
+
     <script src="../source/fake.js"></script>
-    <script src="../source/fake-provider.js"></script>
-    <script src="../source/fake-config.js"></script>
+    <script src="../source/fake-config-provider.js"></script>
+    <script src="../source/fake-http-backend-config.js"></script>
+    <script src="../source/fake-uri-parser-factory.js"></script>
+    <script src="../source/fake-path-factory.js"></script>
     <script src="../source/fake-service.js"></script>
 
-    <!-- App Modules -->
-    <script src="./angular/demo-app.js"></script>
-    <script src="./angular/demo-backend.js"></script>
+    <!-- App files -->
+    <script src="./angular/demo.js"></script>
+
+    <!-- Fake Backend files (include only in DEV mode) -->
+    <script src="./angular/backend/backend.js"></script>
+    <script src="./angular/backend/authors/authors.js"></script>
+    <!--<script src="./angular/backend/authors/authors-service.js"></script>
+    <script src="./angular/backend/authors/authors-run.js"></script>-->
+    <script src="./angular/backend/books/books.js"></script>
+    <script src="./angular/backend/books/books-service.js"></script>
+    <script src="./angular/backend/books/books-run.js"></script>
+    <script src="./angular/backend/libraries/libraries.js"></script>
+    <script src="./angular/backend/libraries/libraries-service.js"></script>
+    <script src="./angular/backend/libraries/libraries-run.js"></script>
   </head>
   <body>
-
+    <p>Your application content will be here!</p>
   </body>
 </html>
