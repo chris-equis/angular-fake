@@ -1,3 +1,5 @@
+require('./fake-config-provider');
+
 angular
 .module('fake')
 
@@ -5,32 +7,35 @@ angular
 
   $provide.decorator('$httpBackend', ['$delegate', function($delegate) {
 
-    var config = $injector.get('FakeConfigProvider').get();
+    var {
+      DELAY,
+      DEBUG,
+      DEBUG_REQUESTS,
+      DEBUG_RESPONSES,
+      DEBUG_HTML
+    } = $injector.get('FakeConfigProvider').get();
 
     var proxy = function(method, url, data, callback, headers) {
       var isHtmlRequest = url.match(/\.html/ig);
-      if(config.DEBUG && config.DEBUG_REQUESTS) {
-        if(!isHtmlRequest || config.DEBUG_HTML) {
+      if(DEBUG && DEBUG_REQUESTS) {
+        if(!isHtmlRequest || DEBUG_HTML) {
           if(data) { console.info(method, url, data); }
           else { console.info(method, url); }
         }
       }
-      var interceptor = function() {
-        var _this = this, _arguments = arguments;
-        setTimeout(function() {
-          if(config.DEBUG && config.DEBUG_RESPONSES) {
-            console.info(method, url, _arguments);
-          }
-          callback.apply(_this, _arguments);
-        }, isHtmlRequest ? 0 : config.DELAY);
+      var interceptor = function(...args) {
+        setTimeout(() => {
+          DEBUG && DEBUG_RESPONSES && console.info(method, url, args);
+          callback.apply(this, args);
+        }.bind(this), isHtmlRequest ? 0 : DELAY);
       };
 
       return $delegate.call(this, method, url, data, interceptor, headers);
     };
 
-    for(var key in $delegate) {
+    Object.keys($delegate).forEach(function(key) {
       proxy[key] = $delegate[key];
-    }
+    });
 
     return proxy;
   }]);

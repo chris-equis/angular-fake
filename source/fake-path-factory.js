@@ -1,3 +1,6 @@
+require('./fake-config-provider');
+require('./fake-uri-parser-factory');
+
 angular
 .module('fake')
 
