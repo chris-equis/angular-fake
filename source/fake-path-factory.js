@@ -5,24 +5,31 @@ angular
 .module('fake')
 
 .factory('FakePath', [
+
   '$httpBackend',
   'FakeConfig',
   'FakeUriParser',
+
   function($httpBackend, FakeConfig, FakeUriParser) {
 
-    var root = FakeConfig.API_ROOT;
+    var {API_ROOT: root} = FakeConfig;
 
     return function(path) {
       var
         parser = new FakeUriParser(path, root),
         createRequestObject = function(method, url, data, headers) {
-          return {
+          var request = {
             method: method,
             url: url,
             data: data,
             headers: headers,
             params: parser.parse(url)
           };
+
+          try { request.data = JSON.parse(data); }
+          catch(e) { /* Nothing to really catch here */ }
+
+          return request;
         },
         createResponseObject = function() {
           return {
