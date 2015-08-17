@@ -20,9 +20,9 @@
     // HTTP Requests (Libraries)
     $http.get(apiRoot + '/libraries');
     $http.get(apiRoot + '/libraries?city=London');
-    $http.post(apiRoot + '/libraries', {name: 'New Library'});
+    $http.post(apiRoot + '/libraries', {name: 'The New Library'});
     $http.get(apiRoot + '/libraries/1');
-    $http.get(apiRoot + '/libraries/5');
+    $http.get(apiRoot + '/libraries/500');
     $http.put(apiRoot + '/libraries/1', {name: 'New Library'});
     $http.delete(apiRoot + '/libraries/1');
 
