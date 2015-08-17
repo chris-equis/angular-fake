@@ -5,7 +5,7 @@ angular
   var
     paramRegExp = (/\{[a-z0-9\-\_]+\}/ig);
 
-  return function(path, root) {
+  return function(path, root = '') {
     var
       paramMatches = (path
         .toString()
