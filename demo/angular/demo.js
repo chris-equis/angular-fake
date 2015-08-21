@@ -15,20 +15,25 @@
   .module('demo', dependencies)
   .run(['$http', function($http) {
 
-    var apiRoot = 'http://api.test.com:9876/v1.0';
+    var roots = {
+      login: 'http://login.server.com:9090',
+      api: 'http://api.server.com:8080/v1'
+    };
+
+    $http.get(roots.login + '/user');
 
     // HTTP Requests (Libraries)
-    $http.get(apiRoot + '/libraries');
-    $http.get(apiRoot + '/libraries?city=London');
-    $http.post(apiRoot + '/libraries', {name: 'The New Library'});
-    $http.get(apiRoot + '/libraries/1');
-    $http.get(apiRoot + '/libraries/500');
-    $http.put(apiRoot + '/libraries/1', {name: 'New Library'});
-    $http.delete(apiRoot + '/libraries/1');
+    $http.get(roots.api + '/libraries');
+    $http.get(roots.api + '/libraries?city=London');
+    $http.post(roots.api + '/libraries', {name: 'The New Library'});
+    $http.get(roots.api + '/libraries/1');
+    $http.get(roots.api + '/libraries/500');
+    $http.put(roots.api + '/libraries/1', {name: 'New Library'});
+    $http.delete(roots.api + '/libraries/1');
 
     // HTTP Requests (Books)
-    $http.get(apiRoot + '/books');
-    $http.get(apiRoot + '/libraries/1/books');
+    $http.get(roots.api + '/books');
+    $http.get(roots.api + '/libraries/1/books');
   }]);
 
 })();

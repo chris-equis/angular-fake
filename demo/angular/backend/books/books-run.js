@@ -3,7 +3,7 @@ angular
 
 .run(['fake', 'fakeBooksService', function(fake, fakeBooksService) {
 
-  fake('/books').when({
+  fake('$api/books').when({
     get: function(request, response) {
       return response
         .send(200)
@@ -11,7 +11,7 @@ angular
     }
   });
 
-  fake('/libraries/{lid}/books').when({
+  fake('$api/libraries/{lid}/books').when({
     get: function(request, response) {
       return response
         .send(200)

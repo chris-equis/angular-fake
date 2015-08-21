@@ -3,7 +3,7 @@ angular
 
 .run(['fake', 'fakeLibrariesService', function(fake, fakeLibrariesService) {
 
-  fake('/libraries').when({
+  fake('$api/libraries').when({
     get: function(request, response) {
       return response
         .send(200)
@@ -18,7 +18,7 @@ angular
     }
   });
 
-  fake('/libraries/{libraryId}').when({
+  fake('$api/libraries/{libraryId}').when({
     get: function(request, response) {
       var
         libraryId = parseInt(request.params.path.libraryId),
