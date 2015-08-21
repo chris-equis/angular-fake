@@ -12,11 +12,9 @@ angular
 
   function($httpBackend, FakeConfig, FakeUriParser) {
 
-    var {API_ROOT: root} = FakeConfig;
-
     return function(path) {
       var
-        parser = new FakeUriParser(path, root),
+        parser = new FakeUriParser(path),
         createRequestObject = function(method, url, data, headers) {
           var request = {
             method: method,
@@ -69,7 +67,8 @@ angular
           setupHttpBackend(method, callbacks[method]);
         });
       };
-    };
 
+      this.ignore = function() {}
+    };
   }
 ]);

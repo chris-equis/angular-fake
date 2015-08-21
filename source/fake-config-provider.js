@@ -4,17 +4,13 @@ angular
 .provider('FakeConfig', function() {
 
   var config = {
-    API_ROOT: '',
     DELAY: 500,
     DEBUG: false,
     DEBUG_REQUESTS: true,
     DEBUG_RESPONSES: true,
-    // DEBUG_GET: true,
-    // DEBUG_POST: true,
-    // DEBUG_PUT: true,
-    // DEBUG_DELETE: true,
     DEBUG_HTML: false,
     PASS_THROUGH_EXTENSIONS: ['html'],
+    PATHS: {/* '$name': 'path' */}
   };
 
   this.set = function(key, value) {
@@ -26,7 +22,15 @@ angular
     return key ? config[key] : config;
   };
 
+  this.path = function(name, path) {
+    var paths = config.PATHS,
+        ret = this;
+    path ? (paths['$' + name] = path) : (ret = paths['$' + name]);
+    return ret;
+  };
+
   this.$get = [function() {
     return config;
   }];
+
 });

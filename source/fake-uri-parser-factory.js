@@ -1,28 +1,37 @@
 angular
 .module('fake')
 
-.factory('FakeUriParser', [function() {
+.factory('FakeUriParser', ['FakeConfig', function(FakeConfig) {
   var
-    paramRegExp = (/\{[a-z0-9\-\_]+\}/ig);
+    patterns = {
+      param: /\{[a-z0-9\-\_]+\}/ig,
+      root: /^(\$[a-z0-9\-\_]+)/i
+    },
+    {PATHS: rootPaths} = FakeConfig;
 
-  return function(path, root = '') {
+  return function(path) {
     var
-      paramMatches = (path
-        .toString()
-        .match(paramRegExp) || []),
-      escape = function(string) {
-        return (string || '').replace(/([\/\:\.])/g, '\\$1');
-      };
+      paramMatches = (path.toString().match(patterns.param) || []),
+      rootNameMatch = (path.toString().match(patterns.root)),
+      rootName = rootNameMatch ? rootNameMatch[0] : '',
+      rootPath = rootPaths[rootName] || '';
+
+    var escape = function(string) {
+      return (string || '').replace(/([\/\:\.])/g, '\\$1');
+    };
 
     this.params = paramMatches.map(function(param) {
       return param.replace(/[\{\}]/g, '');
     });
 
-    this.pattern = new RegExp('^' +
-      escape(root) +
+    this.pattern = new RegExp(
+      '^' +
+      escape(rootPath) +
       escape(path)
         .toString()
-        .replace(paramRegExp, '([a-z0-9\\-\\_]+)') + '(\\?.*)?$');
+        .replace(patterns.root, '')
+        .replace(patterns.param, '([a-z0-9\\-\\_]+)') +
+      '(\\?.*)?$');
 
     this.getPathParams = function(uri) {
       var
