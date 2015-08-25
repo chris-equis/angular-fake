@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var jasmine = require('gulp-jasmine');
 var sourcemaps = require('gulp-sourcemaps');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
@@ -38,7 +39,17 @@ var watch = function() {
   return compile(true);
 };
 
-gulp.task('build', function() { return compile(); });
-gulp.task('watch', function() { return watch(); });
+gulp.task('build', function() {
+  return compile();
+});
+gulp.task('watch', function() {
+  return watch();
+});
+
+gulp.task('test', function() {
+  return gulp
+    .src('source/tests/*.js')
+    .pipe(jasmine());
+})
 
 gulp.task('default', ['watch']);
