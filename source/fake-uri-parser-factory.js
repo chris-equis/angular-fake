@@ -2,19 +2,19 @@ angular
 .module('fake')
 
 .factory('FakeUriParser', ['FakeConfig', function(FakeConfig) {
-  var
-    patterns = {
-      param: /\{[a-z0-9\-\_]+\}/ig,
-      root: /^(\$[a-z0-9\-\_]+)/i
-    },
-    {PATHS: rootPaths} = FakeConfig;
+
+  var {PATHS: rootPaths} = FakeConfig,
+      patterns = {
+        param: /\{[a-z0-9\-\_]+\}/ig,
+        root: /^(\$[a-z0-9\-\_]+)/i
+      };
 
   return function(path) {
-    var
-      paramMatches = (path.toString().match(patterns.param) || []),
-      rootNameMatch = (path.toString().match(patterns.root)),
-      rootName = rootNameMatch ? rootNameMatch[0] : '',
-      rootPath = rootPaths[rootName] || '';
+
+    var paramMatches = (path.toString().match(patterns.param) || []),
+        rootNameMatch = (path.toString().match(patterns.root)),
+        rootName = rootNameMatch ? rootNameMatch[0] : '',
+        rootPath = rootPaths[rootName] || '';
 
     var escape = function(string) {
       return (string || '').replace(/([\/\:\.])/g, '\\$1');
@@ -28,19 +28,17 @@ angular
       '^' +
       escape(rootPath) +
       escape(path)
-        .toString()
         .replace(patterns.root, '')
         .replace(patterns.param, '([a-z0-9\\-\\_]+)') +
       '(\\?.*)?$');
 
     this.getPathParams = function(uri) {
-      var
-        paramValues = uri
-          .toString()
-          .match(this.pattern)
-          .filter(function(match, index) {
-            return index > 0 && index <= this.params.length;
-          }.bind(this));
+      var paramValues = uri
+            .toString()
+            .match(this.pattern)
+            .filter(function(match, index) {
+              return index > 0 && index <= this.params.length;
+            }.bind(this));
 
       return this
         .params
@@ -76,6 +74,7 @@ angular
     this.match = function(uri) {
       return this.pattern.test(uri.toString());
     };
+
   };
 
 }]);

@@ -20,10 +20,8 @@ angular
 
   fake('$api/libraries/{libraryId}').when({
     get: function(request, response) {
-      var
-        libraryId = parseInt(request.params.path.libraryId),
-        library = fakeLibrariesService
-          .retrieveLibrary(libraryId);
+      var libraryId = parseInt(request.params.path.libraryId),
+          library = fakeLibrariesService.retrieveLibrary(libraryId);
 
       response.status  = library ? 200 : 404;
       response.data = library;

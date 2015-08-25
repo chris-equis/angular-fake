@@ -16,9 +16,9 @@
   .run(['$http', function($http) {
 
     var roots = {
-      login: 'http://login.server.com:9090',
-      api: 'http://api.server.com:8080/v1'
-    };
+          login: 'http://login.server.com:9090',
+          api: 'http://api.server.com:8080/v1'
+        };
 
     $http.get(roots.login + '/user');
 

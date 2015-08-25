@@ -16,11 +16,17 @@ angular
 }])
 
 .run(['fake', function(fake) {
+
+  var userLoginWhenGetCallback = function(request, response) {
+        return response
+          .send(200)
+          .with({
+            name: 'John Doe'
+          });
+      };
+
   fake('$login/user').when({
-    get: function(request, response) {
-      return response.send(200).with({
-        name: 'John Doe'
-      });
-    }
+    get: userLoginWhenGetCallback
   });
+
 }]);
