@@ -1,55 +1,15 @@
-var gulp = require('gulp');
-var jasmine = require('gulp-jasmine');
-var sourcemaps = require('gulp-sourcemaps');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
-var browserify = require('browserify');
-var watchify = require('watchify');
-var babel = require('babelify');
+var gulp = require('gulp'),
 
-var compile = function(watch) {
-  var bundler = watchify(browserify('./source/fake.js', {
-    debug: true
-  }).transform(babel));
+    transpile = require('./_gulp/transpiler'),
+    testTask = require('./_gulp/test-task');
 
-  var rebundle = function() {
-    bundler.bundle()
-      .on('error', function(err) {
-        console.error(err);
-        this.emit('end');
-      })
-      .pipe(source('fake.js'))
-      .pipe(buffer())
-      .pipe(sourcemaps.init({ loadMaps: true }))
-      .pipe(sourcemaps.write('./'))
-      .pipe(gulp.dest('./build'));
-  }
+gulp.task('build', function() { return transpile(); });
+gulp.task('watch', function() { return transpile(true); });
 
-  if(watch) {
-    bundler.on('update', function() {
-      console.log('-> bundling...');
-      rebundle();
-    });
-  }
+gulp.task('test', ['build'], testTask);
 
-  rebundle();
-}
-
-var watch = function() {
-  return compile(true);
-};
-
-gulp.task('build', function() {
-  return compile();
+gulp.task('autotest', function() {
+  return gulp.watch(['source/tests/*.js'], ['test']);
 });
-gulp.task('watch', function() {
-  return watch();
-});
-
-gulp.task('test', function() {
-  return gulp
-    .src('source/tests/*.js')
-    .pipe(jasmine());
-})
 
 gulp.task('default', ['watch']);
