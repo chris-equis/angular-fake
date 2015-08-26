@@ -55,7 +55,7 @@ angular
           setupHttpBackend = function(method, callback) {
             if(typeof callback === 'function') {
               $httpBackend
-                .when(method.toUpperCase(), parser.pattern)
+                .when(method.toUpperCase())
                 .respond(createRespondCallback(callback));
             }
           };
@@ -66,7 +66,6 @@ angular
         });
       };
 
-      this.ignore = function() {}
     };
   }
 ]);
