@@ -1,4 +1,3 @@
-require('./fake-config-provider');
 require('./fake-uri-parser-factory');
 
 angular
@@ -7,10 +6,9 @@ angular
 .factory('FakePath', [
 
   '$httpBackend',
-  'FakeConfig',
   'FakeUriParser',
 
-  function($httpBackend, FakeConfig, FakeUriParser) {
+  function($httpBackend, FakeUriParser) {
 
     return function(path) {
       var parser = new FakeUriParser(path),
@@ -22,9 +20,6 @@ angular
                   headers: headers,
                   params: parser.parse(url)
                 };
-
-            try { request.data = JSON.parse(data); }
-            catch(e) { /* Nothing to really catch here */ }
 
             return request;
           },
@@ -48,16 +43,13 @@ angular
                     createRequestObject(method, url, data, headers),
                     createResponseObject()
                   ]);
-
               return [response.status, response.data];
             };
           },
           setupHttpBackend = function(method, callback) {
-            if(typeof callback === 'function') {
-              $httpBackend
-                .when(method.toUpperCase())
-                .respond(createRespondCallback(callback));
-            }
+            return $httpBackend
+              .when(method.toUpperCase(), parser.pattern)
+              .respond(createRespondCallback(callback));
           };
 
       this.when = function(callbacks) {
@@ -65,6 +57,12 @@ angular
           setupHttpBackend(method, callbacks[method]);
         });
       };
+
+      this.$$parser = parser;
+      this.$$createRequestObject = createRequestObject;
+      this.$$createResponseObject = createResponseObject;
+      this.$$createRespondCallback = createRespondCallback;
+      this.$$setupHttpBackend = setupHttpBackend;
 
     };
   }
