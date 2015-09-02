@@ -27,9 +27,7 @@ angular
       '(\\?.*)?$');
 
     this.getPathParams = function(uri) {
-      var paramValues = uri
-            .toString()
-            .match(this.pattern)
+      var paramValues = (uri.toString().match(this.pattern) || [])
             .filter((match, index) => index > 0 && index <= this.params.length);
 
       return this
