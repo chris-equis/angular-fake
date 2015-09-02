@@ -22,7 +22,9 @@ module.exports = function(config) {
     ],
 
     // list of files to exclude
-    exclude: [],
+    exclude: [
+      'source/tests/_*.js'
+    ],
 
 
     // preprocess matching files before serving them to the browser
