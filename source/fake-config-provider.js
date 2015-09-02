@@ -2,7 +2,6 @@ angular
 .module('fake')
 
 .provider('FakeConfig', function() {
-
   var config = {
     DELAY: 500,
     DEBUG: false,
@@ -14,23 +13,27 @@ angular
   };
 
   this.set = function(key, value) {
-    config[key] = value;
+    if(Object.keys(config).indexOf(key) >= 0) {
+      config[key] = value;
+    }
+
     return this;
   };
 
   this.get = function(key) {
-    return key ? config[key] : config;
+    return config[key];
   };
 
   this.path = function(name, path) {
-    var paths = config.PATHS,
-        ret = this;
-    path ? (paths['$' + name] = path) : (ret = paths['$' + name]);
-    return ret;
+    if(name && path) {
+      config.PATHS['$' + name] = path;
+    }
+
+    return this;
   };
 
-  this.$get = [function() {
+  this.$get = function() {
     return config;
-  }];
+  };
 
 });
