@@ -1,10 +1,13 @@
 var gulp = require('gulp');
+var preprocess = require('gulp-preprocess');
 var sourcemaps = require('gulp-sourcemaps');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var babel = require('babelify');
+
+
 
 module.exports = function(watch) {
 
@@ -22,10 +25,11 @@ module.exports = function(watch) {
       })
       .pipe(source('fake.js'))
       .pipe(buffer())
-      .pipe(sourcemaps.init({
-        loadMaps: true
-      }))
-      .pipe(sourcemaps.write('./'))
+      .pipe(preprocess({context: {ENV: 'production'}}))
+      // .pipe(sourcemaps.init({
+      //   loadMaps: true
+      // }))
+      // .pipe(sourcemaps.write('./'))
       .pipe(gulp.dest('./build'));
   };
 
