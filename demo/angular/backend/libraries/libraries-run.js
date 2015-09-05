@@ -5,16 +5,16 @@ angular
 
   fake('$api/libraries').when({
     get: function(request, response) {
-      return response
-        .send(200)
-        .with(fakeLibrariesService
-          .retrieveLibraries(request.params.query));
+      var libraries = fakeLibrariesService
+            .retrieveLibraries(request.params.query);
+
+      return response.send(200, libraries);
     },
     post: function(request, response) {
-      return response
-        .send(200)
-        .with(fakeLibrariesService
-          .createLibrary(request.data.name));
+      var library = fakeLibrariesService
+            .createLibrary(request.data.name);
+
+      return response.send(200, library);
     }
   });
 
@@ -23,17 +23,10 @@ angular
       var libraryId = parseInt(request.params.path.libraryId),
           library = fakeLibrariesService.retrieveLibrary(libraryId);
 
-      response.status  = library ? 200 : 404;
-      response.data = library;
-
-      return response;
+      return response.send(library ? 200 : 404, library);
     },
-    put: function(request, response) {
-      return response.send(200);
-    },
-    delete: function(request, response) {
-      return response.send(202);
-    }
+    put: 200,
+    delete: 202
   });
 
 }]);

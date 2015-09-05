@@ -20,10 +20,14 @@
           api: 'http://api.server.com:8080/v1'
         };
 
-    $http.get(roots.login + '/user');
+    $http.get(roots.login + '/user').then(function(response) {
+      console.log('\n\n\n', response.data);
+    });
 
     // HTTP Requests (Libraries)
-    $http.get(roots.api + '/libraries');
+    $http.get(roots.api + '/libraries').then(function(response) {
+      console.log('\n\n\n', response.data);
+    });
     $http.get(roots.api + '/libraries?city=London');
     $http.post(roots.api + '/libraries', {name: 'The New Library'});
     $http.get(roots.api + '/libraries/1');
@@ -34,6 +38,11 @@
     // HTTP Requests (Books)
     $http.get(roots.api + '/books');
     $http.get(roots.api + '/libraries/1/books');
+
+    // Let's check an HTML request
+    $http.get('index.html').then(function(response) {
+      console.log(response.data.substr(0, 15));
+    });
   }]);
 
 })();
