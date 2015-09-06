@@ -37,9 +37,9 @@ var httpInterceptor = ($q, $timeout, $httpBackend, config, log) => {
 var httpProviderConfig = ($httpProvider) => {
   $httpProvider
   .interceptors
-  .push(['$q', '$timeout', '$httpBackend', 'FakeConfig', 'fakeLog', httpInterceptor]));
+  .push(['$q', '$timeout', '$httpBackend', 'FakeConfig', 'fakeLog', httpInterceptor]);
 };
 
 angular
 .module('fake')
-.config(['$httpProvider', httpProviderConfig);
+.config(['$httpProvider', httpProviderConfig]);

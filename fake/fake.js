@@ -13,7 +13,7 @@ angular
   }
 ]);
 
-require('./fake-http-backend-config');
+require('./fake-http-provider-config');
 require('./fake-config-provider');
 require('./fake-log-service');
 require('./fake-service');
