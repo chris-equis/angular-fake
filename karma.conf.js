@@ -18,12 +18,12 @@ module.exports = function(config) {
       '_bower/angular/angular.js',
       '_bower/angular-mocks/angular-mocks.js',
       'build/fake.js',
-      'source/tests/*.js'
+      'fake/tests/*.js'
     ],
 
     // list of files to exclude
     exclude: [
-      'source/tests/_*.js'
+      'fake/tests/_*.js'
     ],
 
 

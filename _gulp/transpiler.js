@@ -11,7 +11,7 @@ var babel = require('babelify');
 
 module.exports = function(watch) {
 
-  var bundler = watchify(browserify('./source/fake.js', {
+  var bundler = watchify(browserify('./fake/fake.js', {
     debug: true
   }).transform(babel));
 
