@@ -8,50 +8,53 @@ angular
   ($httpBackend, FakeUriParser) => {
 
     return function(path) {
-      var parser = new FakeUriParser(path),
-          createRequestObject = (method, url, data, headers) => {
-            return {
-              method: method,
-              url: url,
-              data: data,
-              headers: headers,
-              params: parser.parse(url)
-            };
-          },
-          createResponseObject = () => {
-            return {
-              send: (status = 200, data = null) => [status, data]
-            };
-          },
-          createRespondCallback = (config) => {
-            return (method, url, data, headers) => {
-              let response = [200];
 
-              if(angular.isArray(config) && angular.isNumber(config[0])) {
-                response = config;
-              } else if(angular.isNumber(config)) {
-                response = [config];
-              } else if(angular.isFunction(config)) {
-                let requestObject = createRequestObject(method, url, data, headers),
-                    responseObject = createResponseObject();
+      this.$$parser = new FakeUriParser(path);
 
-                response = config(requestObject, responseObject);
-              }
+      this.$$makeRequest = function(method, url, data, headers) {
+        return {
+          method: method,
+          url: url,
+          data: data,
+          headers: headers,
+          params: this.$$parser.parse(url)
+        };
+      };
 
-              return response;
-            };
-          },
-          setupHttpBackend = (method, config) => {
-            return $httpBackend
-              .when(method.toUpperCase(), parser.pattern)
-              .respond(createRespondCallback(config));
-          };
+      this.$$makeResponse = function() {
+        return {
+          send: (status = 200, ...data) => [status, ...data]
+        };
+      };
 
-      this.parser = new FakeUriParser(path);
+      this.$$makeResponder = function(config) {
+        return (method, url, data, headers) => {
+          let response = [0];
+
+          if(angular.isArray(config) && angular.isNumber(config[0])) {
+            response = config;
+          } else if(angular.isNumber(config)) {
+            response = [config];
+          } else if(angular.isFunction(config)) {
+            let requestObject = this.$$makeRequest(method, url, data, headers),
+                responseObject = this.$$makeResponse();
+
+            response = config(requestObject, responseObject) || [0];
+          }
+
+          return response;
+        };
+      };
+
+      this.$$setupHttpBackend = function(method, config) {
+        return $httpBackend
+          .when(method.toUpperCase(), this.$$parser.pattern)
+          .respond(this.$$makeResponder(config));
+      };
 
       this.when = function(configs) {
         Object.keys(configs).forEach((method) => {
-          setupHttpBackend(method, configs[method]);
+          this.$$setupHttpBackend(method, configs[method]);
         });
       };
 
