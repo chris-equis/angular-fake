@@ -8,7 +8,8 @@
   "main": "fake.js",
   "keywords": [
     "mock",
-    "backend"
+    "backend",
+    "E2E"
   ],
   "license": "MIT",
   "dependencies": {
