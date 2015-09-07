@@ -5,15 +5,16 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var browserify = require('browserify');
 var watchify = require('watchify');
-var babel = require('babelify');
-
-
+var babelify = require('babelify');
 
 module.exports = function(watch) {
 
   var bundler = watchify(browserify('./fake/fake.js', {
     debug: true
-  }).transform(babel));
+  }).transform(babelify.configure({
+    externalHelpers: true,
+    optional: ['runtime']
+  })));
 
   var bundle = function() {
     console.info('... bundling');
@@ -26,10 +27,10 @@ module.exports = function(watch) {
       .pipe(source('fake.js'))
       .pipe(buffer())
       .pipe(preprocess({context: {ENV: 'production'}}))
-      // .pipe(sourcemaps.init({
-      //   loadMaps: true
-      // }))
-      // .pipe(sourcemaps.write('./'))
+      .pipe(sourcemaps.init({
+        loadMaps: true
+      }))
+      .pipe(sourcemaps.write('./'))
       .pipe(gulp.dest('./build'));
   };
 
