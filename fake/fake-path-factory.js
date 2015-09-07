@@ -7,11 +7,13 @@ angular
   'FakeUriParser',
   ($httpBackend, FakeUriParser) => {
 
-    return function(path) {
+    return class FakePath {
 
-      this.$$parser = new FakeUriParser(path);
+      constructor(path) {
+        this.$$parser = new FakeUriParser(path);
+      }
 
-      this.$$makeRequest = function(method, url, data, headers) {
+      $$makeRequest(method, url, data, headers) {
         return {
           method: method,
           url: url,
@@ -19,15 +21,15 @@ angular
           headers: headers,
           params: this.$$parser.parse(url)
         };
-      };
+      }
 
-      this.$$makeResponse = function() {
+      $$makeResponse() {
         return {
           send: (status = 200, ...data) => [status, ...data]
         };
-      };
+      }
 
-      this.$$makeResponder = function(config) {
+      $$makeResponder(config) {
         return (method, url, data, headers) => {
           let response = [0];
 
@@ -44,20 +46,19 @@ angular
 
           return response;
         };
-      };
+      }
 
-      this.$$setupHttpBackend = function(method, config) {
+      $$setupHttpBackend(method, config) {
         return $httpBackend
           .when(method.toUpperCase(), this.$$parser.pattern)
           .respond(this.$$makeResponder(config));
       };
 
-      this.when = function(configs) {
+      when(configs) {
         Object.keys(configs).forEach((method) => {
           this.$$setupHttpBackend(method, configs[method]);
         });
       };
-
     };
   }
 ]);

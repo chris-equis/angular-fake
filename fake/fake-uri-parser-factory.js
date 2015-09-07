@@ -5,31 +5,35 @@ angular
 .factory('FakeUriParser', [
   'FakeConfig',
   (FakeConfig) => {
-    var {PATHS: rootPaths} = FakeConfig,
+    let {PATHS: rootPaths} = FakeConfig,
         patterns = {
           param: /\{[a-z0-9\-\_]+\}/ig,
           root: /^(\$[a-z0-9\-\_]+)/i
         };
 
-    return function(path) {
-      var paramMatches = (path.toString().match(patterns.param) || []),
-          rootNameMatch = (path.toString().match(patterns.root)),
-          rootName = rootNameMatch ? rootNameMatch[0] : '',
-          rootPath = rootPaths[rootName] || '',
+    return class FakeUriParser {
 
-          escape = (string) => (string || '').replace(/([\/\:\.])/g, '\\$1');
+      constructor(path) {
+        let paramMatches = (path.toString().match(patterns.param) || []),
+            rootNameMatch = (path.toString().match(patterns.root)),
+            rootName = rootNameMatch ? rootNameMatch[0] : '',
+            rootPath = rootPaths[rootName] || '',
 
-      this.params = paramMatches.map((param) => param.replace(/[\{\}]/g, ''));
+            escape = (string) => (string || '').replace(/([\/\:\.])/g, '\\$1');
 
-      this.pattern = new RegExp(
-        '^' +
-        escape(rootPath) +
-        escape(path)
-          .replace(patterns.root, '')
-          .replace(patterns.param, '([a-z0-9\\-\\_]+)') +
-        '(\\?.*)?$');
+        this.params = paramMatches
+          .map((param) => param.replace(/[\{\}]/g, ''));
 
-      this.getPathParams = function(uri) {
+        this.pattern = new RegExp(
+          '^' +
+          escape(rootPath) +
+          escape(path)
+            .replace(patterns.root, '')
+            .replace(patterns.param, '([a-z0-9\\-\\_]+)') +
+          '(\\?.*)?$');
+      }
+
+      getPathParams(uri) {
         var paramValues = (uri.toString().match(this.pattern) || [])
               .filter((match, index) => index > 0 && index <= this.params.length);
 
@@ -39,9 +43,9 @@ angular
             paramsObject[paramName] = decodeURI(paramValues[index]);
             return paramsObject;
           }, {});
-      };
+      }
 
-      this.getQueryParams = function(uri) {
+      getQueryParams(uri) 
         return ((uri.toString().match(/\?.*/) || [])[0] || '')
           .replace(/\?/g, '')
           .split('&')
@@ -54,15 +58,14 @@ angular
 
             return paramsObject;
           }, {});
-      };
+      }
 
-      this.parse = function(uri) {
+      parse(uri) {
         return {
           path: this.getPathParams(uri),
           query: this.getQueryParams(uri)
         };
-      };
-
+      }
     };
   }
 ]);
