@@ -5,7 +5,8 @@ angular
 .service('fake', [
   'FakePath',
   function(FakePath) {
-    return function(path) {
+
+    return (path) => {
       return new FakePath(path);
     };
   }
