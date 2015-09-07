@@ -19,6 +19,6 @@ describe('Fake Service functionality', function() {
 
   it('Should have when() method', function() {
     expect(typeof instance.when).toBe('function');
-  })
+  });
 
 });
