@@ -4,7 +4,7 @@ angular
 .provider('FakeConfig', function() {
 
   var config = {
-    DELAY: 500,
+    DELAY: 0,
 
     DEBUG: false,
     DEBUG_REQUESTS: true,
@@ -20,7 +20,7 @@ angular
     DEBUG_METHOD_TRACE: false,
     DEBUG_METHOD_OPTIONS: false,
 
-    PASS_THROUGH_EXTENSIONS: ['html'],
+    PASS_THROUGH_EXTENSIONS: ['html', 'svg', 'json'],
     DEBUG_PASSED_THROUGH_EXTENSIONS: false,
 
     PATHS: {/* '$name': 'path' */}
