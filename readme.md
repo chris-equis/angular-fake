@@ -244,4 +244,5 @@ angular
 You can also generate an amount of data, when running the service (a list of books) and on querying them you can provide status codes like 404 when a book object was not found within the list.
 
 *Using libraries to generate data*
+
 You can easily use [Chance JS](http://chancejs.com/) to generate numbers, names, paragraphs and many more and also [lodash](https://lodash.com/) that will help in working with ranges, arrays and so on.
