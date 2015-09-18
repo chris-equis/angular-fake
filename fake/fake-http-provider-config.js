@@ -1,16 +1,13 @@
 require('./fake-config-provider');
 
 var httpInterceptor = ($q, $timeout, $httpBackend, config, log) => {
-  var { DELAY: delay } = config,
-      responder = {
-        delay: (response, resolution = 'resolve') => {
-          var timeoutParams = [
-            () => $q[resolution](response),
-            response.config.url.match(/\.(html)/ig) ? 0 : delay
-          ];
 
-          return $timeout(...timeoutParams);
-        }
+  var isHtml = (url = '') => url.match(/\.(html)/ig),
+      delay = function(qCallback, response) {
+        return $timeout(
+          () => qCallback(response),
+          isHtml(response.config && response.config.url) ? 0 : config.DELAY
+        );
       };
 
   return {
@@ -22,22 +19,22 @@ var httpInterceptor = ($q, $timeout, $httpBackend, config, log) => {
       log.error(err);
       return $q.reject(err);
     },
-
     response: (response) => {
       log.response(response);
-      return responder.delay(response, 'resolve');
+      return delay($q.when, response);
     },
     responseError: (err) => {
       log.error(err);
-      responder.delay(err, 'reject');
+      return delay($q.reject, err);
     }
   };
+
 };
 
 var httpProviderConfig = ($httpProvider) => {
   $httpProvider
-  .interceptors
-  .push(['$q', '$timeout', '$httpBackend', 'FakeConfig', 'fakeLog', httpInterceptor]);
+    .interceptors
+    .push(['$q', '$timeout', '$httpBackend', 'FakeConfig', 'fakeLog', httpInterceptor]);
 };
 
 angular
