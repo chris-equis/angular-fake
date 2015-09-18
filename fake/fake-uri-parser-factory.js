@@ -45,7 +45,7 @@ angular
           }, {});
       }
 
-      getQueryParams(uri) 
+      getQueryParams(uri) {
         return ((uri.toString().match(/\?.*/) || [])[0] || '')
           .replace(/\?/g, '')
           .split('&')
