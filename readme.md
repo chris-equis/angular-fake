@@ -20,7 +20,7 @@ angular.module('your.application.backend', ['fake']);
 angular.module('your.application', ['your.application.backend']);
 ```
 
-To exclude `backend` module in production so you'll probably want to use either [gulp-reprocess](https://www.npmjs.com/package/gulp-preprocess) or [grunt-preprocess](https://www.npmjs.com/package/grunt-preprocess).
+To exclude `backend` module in production you'll probably want to use either [gulp-reprocess](https://www.npmjs.com/package/gulp-preprocess) or [grunt-preprocess](https://www.npmjs.com/package/grunt-preprocess).
 
 ```html
 <!-- @if NODE_ENV='development' -->
