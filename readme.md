@@ -246,3 +246,6 @@ You can also generate an amount of data, when running the service (a list of boo
 *Using libraries to generate data*
 
 You can easily use [Chance JS](http://chancejs.com/) to generate numbers, names, paragraphs and many more and also [lodash](https://lodash.com/) that will help in working with ranges, arrays and so on.
+
+---
+There's a [demo app](https://github.com/chris-equis/angular-fake/tree/master/demo) in this repository that might help you understand better how angular-fake works.
