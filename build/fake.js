@@ -371,11 +371,7 @@ angular.module('fake').factory('FakeUriParser', ['FakeConfig', function (FakeCon
 angular.module('fake', ['ngMockE2E']).run(['$httpBackend', 'FakeConfig', function ($httpBackend, FakeConfig) {
   var extensions = (FakeConfig.PASS_THROUGH_EXTENSIONS || []).join('|');
 
-  // $httpBackend
-  //   .when('GET', new RegExp(`.(${extensions})`, 'ig'))
-  //   .passThrough();
-
-  $httpBackend.when('GET', 'http://localhost:8088/projects/fake/demo/templates/template-sample.html').respond(304, '<html></html>');
+  $httpBackend.when('GET', new RegExp('.(' + extensions + ')', 'ig')).passThrough();
 }]);
 
 require('./fake-http-provider-config');
