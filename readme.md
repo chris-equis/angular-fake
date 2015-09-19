@@ -20,7 +20,7 @@ angular.module('your.application.backend', ['fake']);
 angular.module('your.application', ['your.application.backend']);
 ```
 
-To exclude `backend` module in production so you'll probably want to use either [gulp-reprocess](https://www.npmjs.com/package/gulp-preprocess) or [grunt-preprocess](https://www.npmjs.com/package/grunt-preprocess).
+To exclude `backend` module in production you'll probably want to use either [gulp-reprocess](https://www.npmjs.com/package/gulp-preprocess) or [grunt-preprocess](https://www.npmjs.com/package/grunt-preprocess).
 
 ```html
 <!-- @if NODE_ENV='development' -->
@@ -71,6 +71,7 @@ angular
  - **`path`**`(name, url)`, e.g. `path('api', 'http://my.api.com:80/v1');`
 
 > **Note** that you can also set paths using `set()` method:
+
 ```javascript
 FakeConfigProvider.set('PATHS', {
   $api: 'http://my.api.com:80/v1',
@@ -123,10 +124,10 @@ fake('$api/libraries/{libraryId}/books/{bookId}')
     
     // pass a function
     post: function(request, response) {
-    var data = {
+      var data = {
         id: request.params.bookId,
         title: 'Lorem Ipsum'
-    };
+      };
       return response.send(200, data);
   }
   });
@@ -137,6 +138,7 @@ fake('$api/libraries/{libraryId}/books/{bookId}')
 The respond callback recieves two parameters `request` Object and `response` Object.
 
 *Request Object*
+
 Request Object has request related properties such as `method`, `url`, `data` - request body, `headers` (the same properties that the respond callback of  `$httpBackend.when` declaration) but also an important Object `params` that has all the mapped parameters and query string Object of the intercepted URL.
 
 ```javascript
@@ -163,19 +165,21 @@ Request Object has request related properties such as `method`, `url`, `data` - 
     path: {
       libraryId: '1',
       bookId: '2'
-  },
+    },
   
-  // Query params
-  query: {
-    chapters: '4',
-    title: ''
-  }
+    // Query params
+    query: {
+      chapters: '4',
+      title: ''
+    }
   }
 }
 ```
 
 *Response Object*
+
 The response Object provides only a function in order to set a response to be sent:
+
 ```javascript
 function(request, response) {
   return response.send(200, { id: 1 });
@@ -239,5 +243,6 @@ angular
 ```
 You can also generate an amount of data, when running the service (a list of books) and on querying them you can provide status codes like 404 when a book object was not found within the list.
 
----
-> Written with [StackEdit](https://stackedit.io/).
+*Using libraries to generate data*
+
+You can easily use [Chance JS](http://chancejs.com/) to generate numbers, names, paragraphs and many more and also [lodash](https://lodash.com/) that will help in working with ranges, arrays and so on.
